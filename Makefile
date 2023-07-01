@@ -4,11 +4,15 @@ INFO?=0
 DEBUG?=0
 SANITIZE?=0
 DEBUG_SYMBOLS?=1
-EXTRA_WARNINGS?=0
+EXTRA_WARNINGS?=1
 CYCLE_TIMER?=1
 
 
 CFLAGS := -Wall -Wextra -O$(OPT)  -std=c++20 -DCYCLE_TIMER=$(CYCLE_TIMER) -march=native
+
+ifeq ($(EXTRA_WARNINGS),1)
+CFLAGS += -Weverything -Wno-c++98-compat-local-type-template-args -Wno-sign-conversion -Wno-shorten-64-to-32 -Wno-pre-c++14-compat -Wno-padded -Wno-c++98-compat
+endif
 
 ifeq ($(DEBUG_SYMBOLS),1)
 CFLAGS += -g -gdwarf-4

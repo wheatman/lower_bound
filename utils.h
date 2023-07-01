@@ -16,11 +16,8 @@ template <class T> std::vector<T> get_sorted(std::size_t n) {
 template <class T>
 std::vector<T> create_random_data(size_t n, size_t max_val,
                                   std::mt19937_64 eng) {
-  if (max_val > (size_t)std::numeric_limits<T>::max()) {
-    max_val = (size_t)std::numeric_limits<T>::max();
-  }
-
-  std::uniform_int_distribution<T> dist(0, (T)max_val);
+  std::uniform_int_distribution<uint64_t> dist(0,
+                                               static_cast<uint64_t>(max_val));
   std::vector<T> v(n);
   for (auto &el : v) {
     el = dist(eng);
@@ -51,7 +48,7 @@ static inline uint32_t bsf_word(uint32_t word) {
 template <class T> inline void Log(const __m256i &value) {
   const size_t n = sizeof(__m256i) / sizeof(T);
   T buffer[n];
-  _mm256_storeu_si256((__m256i *)buffer, value);
+  _mm256_storeu_si256(static_cast<__m256i *>(buffer), value);
   for (size_t i = 0; i < n; i++) {
     std::cout << +buffer[i] << " ";
   }
